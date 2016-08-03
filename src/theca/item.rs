@@ -25,10 +25,10 @@ impl Item {
     }
 
     pub fn write<T: Write>(&self,
-                       output: &mut T,
-                       line_format: &LineFormat,
-                       search_body: bool)
-                       -> Result<()> {
+                           output: &mut T,
+                           line_format: &LineFormat,
+                           search_body: bool)
+                           -> Result<()> {
         let column_seperator: String = repeat(' ')
                                            .take(line_format.colsep)
                                            .collect();

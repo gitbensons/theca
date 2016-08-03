@@ -1,5 +1,5 @@
 {
-  "$schema": "https://github.com/rolandshoemaker/theca/blob/master/docs/schema.json",
+  "$schema": "https://raw.githubusercontent.com/pwoolcoc/theca/master/docs/schema.json",
   "id": "/",
   "type": "object",
   "properties": {

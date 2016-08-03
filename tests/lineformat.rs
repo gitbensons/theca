@@ -1,6 +1,6 @@
 extern crate theca;
 
-use theca::{Status, Item};
+use theca::item::{Status, Item};
 use theca::lineformat::LineFormat;
 
 struct LineTest {

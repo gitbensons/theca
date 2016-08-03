@@ -37,9 +37,10 @@ use std::io::stdin;
 use std::io::Error as IoError;
 
 // theca imports
-use {DATEFMT, DATEFMT_SHORT, Item, Profile, Status, BoolFlags};
+use {DATEFMT, DATEFMT_SHORT, Profile, BoolFlags};
 use errors::{Result, Error};
 use lineformat::LineFormat;
+use item::{Item, Status};
 
 pub use libc::{STDIN_FILENO, STDOUT_FILENO, STDERR_FILENO};
 

@@ -42,10 +42,10 @@ Usage:
 
 Profiles:
     -f PATH, --profile-folder PATH      Path to folder containing profile.json
-                                        files [default can be set with env var 
+                                        files [default can be set with env var
                                         THECA_PROFILE_FOLDER].
     -p PROFILE, --profile PROFILE       Specify non-default profile [default
-                                        can be set with env var 
+                                        can be set with env var
                                         THECA_DEFAULT_PROFILE].
 
 Printing format:
@@ -101,11 +101,11 @@ fn theca_main() -> Result<()> {
     try!(setup_args(&mut args));
 
     let (mut profile, profile_fingerprint) = try!(Profile::new(&args.flag_profile,
-                                                                    &args.flag_profile_folder,
-                                                                    &args.flag_key,
-                                                                    args.cmd_new_profile,
-                                                                    args.flag_encrypted,
-                                                                    args.flag_yes));
+                                                               &args.flag_profile_folder,
+                                                               &args.flag_key,
+                                                               args.cmd_new_profile,
+                                                               args.flag_encrypted,
+                                                               args.flag_yes));
 
     try!(parse_cmds(&mut profile, &mut args, &profile_fingerprint));
 

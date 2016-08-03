@@ -5,22 +5,10 @@ use std::cmp::Ordering;
 
 #[test]
 fn test_format_field() {
-    assert_eq!(
-        format_field(
-            &"this is some stuff yo".to_string(),
-            12,
-            false
-        ),
-         "this is some".to_string()
-    );
-    assert_eq!(
-        format_field(
-            &"this is some stuff yo".to_string(),
-            11,
-            true
-        ),
-        "this is ...".to_string()
-    );
+    assert_eq!(format_field(&"this is some stuff yo".to_string(), 12, false),
+               "this is some".to_string());
+    assert_eq!(format_field(&"this is some stuff yo".to_string(), 11, true),
+               "this is ...".to_string());
 }
 
 #[test]

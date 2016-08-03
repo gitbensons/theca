@@ -25,10 +25,7 @@ pub struct LineFormat {
 }
 
 impl LineFormat {
-    pub fn new(items: &[Item],
-               condensed: bool,
-               search: bool)
-               -> Result<LineFormat> {
+    pub fn new(items: &[Item], condensed: bool, search: bool) -> Result<LineFormat> {
         // get termsize :>
         let console_width = termsize();
 
@@ -63,7 +60,7 @@ impl LineFormat {
         line_format.title_width = match items.iter()
                                              .max_by_key(|n| if !n.body.is_empty() {
                                                  n.title.len() + 4
-                                                 } else {
+                                             } else {
                                                  n.title.len()
                                              }) {
             Some(n) => {

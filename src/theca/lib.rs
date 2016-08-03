@@ -116,15 +116,15 @@ pub struct BoolFlags {
 impl BoolFlags {
     pub fn from_args(args: &Args) -> BoolFlags {
         BoolFlags {
-               condensed: args.flag_condensed,
-               datesort: args.flag_datesort,
-               editor: args.flag_editor,
-               encrypted: args.flag_encrypted,
-               json: args.flag_json,
-               regex: args.flag_regex,
-               reverse: args.flag_reverse,
-               search_body: args.flag_search_body,
-               yes: args.flag_yes,
+            condensed: args.flag_condensed,
+            datesort: args.flag_datesort,
+            editor: args.flag_editor,
+            encrypted: args.flag_encrypted,
+            json: args.flag_json,
+            regex: args.flag_regex,
+            reverse: args.flag_reverse,
+            search_body: args.flag_search_body,
+            yes: args.flag_yes,
         }
     }
 }
@@ -153,36 +153,23 @@ pub enum Status {
 }
 
 impl Encodable for Status {
-    fn encode<S: rustc_serialize::Encoder>(&self, encoder: &mut S) -> ::std::result::Result<(), S::Error> {
+    fn encode<S: rustc_serialize::Encoder>(&self,
+                                           encoder: &mut S)
+                                           -> ::std::result::Result<(), S::Error> {
         match *self {
             Status::Blank => {
                 encoder.emit_enum("Status", |encoder| {
-                             encoder.emit_enum_variant(
-                                     "",
-                                     0usize,
-                                     0usize,
-                                     |_| Ok(())
-                            )
+                    encoder.emit_enum_variant("", 0usize, 0usize, |_| Ok(()))
                 })
             }
             Status::Started => {
                 encoder.emit_enum("Status", |encoder| {
-                             encoder.emit_enum_variant(
-                                     "Started",
-                                     1usize,
-                                     0usize,
-                                     |_| Ok(())
-                            )
+                    encoder.emit_enum_variant("Started", 1usize, 0usize, |_| Ok(()))
                 })
             }
             Status::Urgent => {
                 encoder.emit_enum("Status", |encoder| {
-                             encoder.emit_enum_variant(
-                                     "Urgent",
-                                     2usize,
-                                     0usize,
-                                    |_| Ok(())
-                            )
+                    encoder.emit_enum_variant("Urgent", 2usize, 0usize, |_| Ok(()))
                 })
             }
         }
@@ -190,25 +177,21 @@ impl Encodable for Status {
 }
 
 impl Decodable for Status {
-    fn decode<D: ::rustc_serialize::Decoder>(decoder: &mut D) -> ::std::result::Result<Status, D::Error> {
-        decoder.read_enum(
-                "Status",
-                |decoder| {
-                          decoder.read_enum_variant(
-                                  &["", "Started", "Urgent"],
-                                  |_, i| {
-                                        Ok(match i {
-                                                0usize => Status::Blank,
-                                                1usize => Status::Started,
-                                                2usize => Status::Urgent,
-                                                _ => panic!("internal error: entered unreachable code"),
-                                                                    
-                                  }
-                        )
+    fn decode<D: ::rustc_serialize::Decoder>(decoder: &mut D)
+                                             -> ::std::result::Result<Status, D::Error> {
+        decoder.read_enum("Status", |decoder| {
+            decoder.read_enum_variant(&["", "Started", "Urgent"], |_, i| {
+                Ok(match i {
+                    0usize => Status::Blank,
+                    1usize => Status::Started,
+                    2usize => Status::Urgent,
+                    _ => panic!("internal error: entered unreachable code"),
+
                 })
+            })
         })
     }
-}                                                        
+}
 
 impl fmt::Display for Status {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -269,7 +252,9 @@ impl Item {
         if line_format.status_width != 0 {
             try!(write!(output,
                         "{}",
-                        format_field(&format!("{:?}", self.status), line_format.status_width, false)));
+                        format_field(&format!("{:?}", self.status),
+                                     line_format.status_width,
+                                     false)));
             try!(write!(output, "{}", column_seperator));
         }
         try!(writeln!(output,
@@ -294,15 +279,13 @@ pub struct Profile {
 }
 
 impl Profile {
-    fn from_scratch(profile_folder: &str,
-                    encrypted: bool,
-                    yes: bool)
-                    -> Result<(Profile, u64)> {
+    fn from_scratch(profile_folder: &str, encrypted: bool, yes: bool) -> Result<(Profile, u64)> {
         let profile_path = try!(find_profile_folder(profile_folder));
         // if the folder doesn't exist, make it yo!
         if !profile_path.exists() {
             if !yes {
-                let message = format!("{} doesn't exist, would you like to create it?\n", profile_path.display());
+                let message = format!("{} doesn't exist, would you like to create it?\n",
+                                      profile_path.display());
                 if !try!(get_yn_input(&message)) {
                     return specific_fail_str!("ok bye ♥");
                 }
@@ -340,7 +323,9 @@ impl Profile {
             };
             let decoded: Profile = match decode(&*contents) {
                 Ok(s) => s,
-                Err(_) => return specific_fail!(format!("invalid JSON in {}", profile_path.display())),
+                Err(_) => {
+                    return specific_fail!(format!("invalid JSON in {}", profile_path.display()))
+                }
             };
             let fingerprint = try!(profile_fingerprint(profile_path));
             Ok((decoded, fingerprint))
@@ -393,7 +378,7 @@ impl Profile {
 
         if args.cmd_new_profile && profile_path.exists() && !args.flag_yes {
             let message = format!("profile {} already exists would you like to overwrite it?\n",
-                     profile_path.display());
+                                  profile_path.display());
             if !try!(get_yn_input(&message)) {
                 return specific_fail_str!("ok bye ♥");
             }
@@ -402,9 +387,9 @@ impl Profile {
         if fingerprint > &0u64 {
             let new_fingerprint = try!(profile_fingerprint(&profile_path));
             if &new_fingerprint != fingerprint && !args.flag_yes {
-                let message = format!("changes have been made to the profile '{}' on disk since it was \
-                          loaded, would you like to attempt to merge them?\n",
-                         args.flag_profile);
+                let message = format!("changes have been made to the profile '{}' on disk since \
+                                       it was loaded, would you like to attempt to merge them?\n",
+                                      args.flag_profile);
                 if !try!(get_yn_input(&message)) {
                     return specific_fail_str!("ok bye ♥");
                 }
@@ -460,31 +445,32 @@ impl Profile {
     /// transfer a note from the profile to another profile
     pub fn transfer_note(&mut self, args: &Args) -> Result<()> {
         if args.flag_profile == args.arg_name[0] {
-            return specific_fail!(format!("cannot transfer a note from a profile to itself ({} -> {})",
-                                   args.flag_profile,
-                                   args.arg_name[0]));
+            return specific_fail!(format!("cannot transfer a note from a profile to itself ({} \
+                                           -> {})",
+                                          args.flag_profile,
+                                          args.arg_name[0]));
         }
 
         let mut trans_args = args.clone();
         trans_args.flag_profile = args.arg_name[0].clone();
-        let (mut trans_profile, trans_fingerprint) = try!(Profile::new(
-            &args.arg_name[0],
-            &args.flag_profile_folder,
-            &args.flag_key,
-            args.cmd_new_profile,
-            args.flag_encrypted,
-            args.flag_yes
-        ));
+        let (mut trans_profile, trans_fingerprint) = try!(Profile::new(&args.arg_name[0],
+                                                                       &args.flag_profile_folder,
+                                                                       &args.flag_key,
+                                                                       args.cmd_new_profile,
+                                                                       args.flag_encrypted,
+                                                                       args.flag_yes));
 
         if self.notes
                .iter()
                .find(|n| n.id == args.arg_id[0])
-               .map(|n| trans_profile.add_note(&n.title,
+               .map(|n| {
+                   trans_profile.add_note(&n.title,
                                           &[n.body.clone()],
                                           Some(n.status),
                                           false,
                                           false,
-                                          false))
+                                          false)
+               })
                .is_some() {
             if self.notes
                    .iter()
@@ -493,16 +479,16 @@ impl Profile {
                    .is_some() {
                 try!(trans_profile.save_to_file(&trans_args, &trans_fingerprint))
             } else {
-                return specific_fail!(format!("couldn't remove note {} in {}, aborting nothing will be \
-                                        saved",
-                                       args.arg_id[0],
-                                       args.flag_profile))
+                return specific_fail!(format!("couldn't remove note {} in {}, aborting nothing \
+                                               will be saved",
+                                              args.arg_id[0],
+                                              args.flag_profile));
             }
         } else {
             return specific_fail!(format!("could not transfer note {} from {} -> {}",
-                                   args.arg_id[0],
-                                   args.flag_profile,
-                                   args.arg_name[0]))
+                                          args.arg_id[0],
+                                          args.flag_profile,
+                                          args.arg_name[0]));
         }
         println!("transfered [{}: note {} -> {}: note {}]",
                  args.flag_profile,
@@ -617,12 +603,12 @@ impl Profile {
                 if istty(STDOUT_FILENO) && istty(STDIN_FILENO) {
                     if encrypted && !yes {
                         let message = format!("{0}\n\n{1}\n{2}\n\n{0}\n{3}\n",
-                                    "## [WARNING] ##",
-                                    "continuing will write the body of the decrypted note to a \
-                                    temporary",
-                                    "file, increasing the possibilty it could be recovered \
-                                    later.",
-                                    "Are you sure you want to continue?\n");
+                                              "## [WARNING] ##",
+                                              "continuing will write the body of the decrypted \
+                                               note to a temporary",
+                                              "file, increasing the possibilty it could be \
+                                               recovered later.",
+                                              "Are you sure you want to continue?\n");
                         if !try!(get_yn_input(&message)) {
                             return specific_fail_str!("ok bye ♥");
                         }
@@ -761,10 +747,7 @@ impl Profile {
                       status: Option<Status>)
                       -> Result<()> {
         if !self.notes.is_empty() {
-            try!(sorted_print(&mut self.notes.clone(),
-                              limit,
-                              flags,
-                              status));
+            try!(sorted_print(&mut self.notes.clone(), limit, flags, status));
         } else if flags.json {
             println!("[]");
         } else {
@@ -806,10 +789,7 @@ impl Profile {
                 .collect()
         };
         if !notes.is_empty() {
-            try!(sorted_print(&mut notes.clone(),
-                              limit,
-                              flags,
-                              status));
+            try!(sorted_print(&mut notes.clone(), limit, flags, status));
         } else if flags.json {
             println!("[]");
         } else {
@@ -846,15 +826,12 @@ pub fn setup_args(args: &mut Args) -> Result<()> {
     if args.flag_profile.is_empty() {
         args.flag_profile = "default".to_string();
     }
-    
+
 
     Ok(())
 }
 
-pub fn parse_cmds(profile: &mut Profile,
-                  args: &mut Args,
-                  profile_fingerprint: &u64)
-                  -> Result<()> {
+pub fn parse_cmds(profile: &mut Profile, args: &mut Args, profile_fingerprint: &u64) -> Result<()> {
     let status = try!(extract_status(args.flag_none, args.flag_started, args.flag_urgent));
     let flags = BoolFlags::from_args(args);
 
@@ -942,10 +919,7 @@ pub fn parse_cmds(profile: &mut Profile,
     } else if !args.arg_id.is_empty() {
         try!(profile.view_note(args.arg_id[0], args.flag_json, args.flag_condensed));
     } else if args.cmd_search {
-        try!(profile.search_notes(&args.arg_pattern,
-                                    args.flag_limit,
-                                    flags,
-                                    status));
+        try!(profile.search_notes(&args.arg_pattern, args.flag_limit, flags, status));
     } else if args.cmd_info {
         try!(profile.stats(&args.flag_profile));
     } else if args.cmd_import {
@@ -970,9 +944,7 @@ pub fn parse_cmds(profile: &mut Profile,
         let profile_path = try!(find_profile_folder(&args.flag_profile_folder));
         try!(profiles_in_folder(&profile_path));
     } else if args.arg_id.is_empty() {
-        try!(profile.list_notes(args.flag_limit,
-                                flags,
-                                status));
+        try!(profile.list_notes(args.flag_limit, flags, status));
     }
 
     Ok(())

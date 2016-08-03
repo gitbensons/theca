@@ -1,4 +1,4 @@
-THECA 1 "2015" theca v1.0.0-dev THECA
+THECA 1 "2015" theca v1.0.0 THECA
 =====================================
 
 NAME
@@ -163,7 +163,7 @@ FILE FORMAT
 schema.
 
    {
-    "$schema": "https://github.com/rolandshoemaker/theca/blob/master/docs/DESIGN.md",
+    "$schema": "https://raw.githubusercontent.com/pwoolcoc/theca/master/docs/schema.json",
     "id": "/",
     "type": "object",
     "properties": {
@@ -217,10 +217,12 @@ schema.
     ]
    }
 
-AUTHOR
-------
+AUTHORS
+-------
 
 Roland Bracewell Shoemaker <rolandshoemaker@gmail.com>
+
+Paul Woolcock <paul@woolcock.us>
 
 LICENSE
 -------

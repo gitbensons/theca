@@ -181,8 +181,9 @@ pub fn drop_to_editor(contents: &str) -> Result<String> {
 }
 
 pub fn get_password() -> Result<String> {
-    // should really turn off terminal echo...
-    print!("Key: ");
+    let mut stdout = try!(get_stdout());
+    try!(write!(stdout, "Key: "));
+    try!(stdout.flush());
     let tty = c::istty(STDIN_FILENO);
     if tty {
         try!(set_term_echo(false));
@@ -195,15 +196,12 @@ pub fn get_password() -> Result<String> {
     if tty {
         try!(set_term_echo(true));
     }
-    println!("");
+    try!(writeln!(stdout, ""));
     Ok(key.trim().to_string())
 }
 
 pub fn get_yn_input(message: &str) -> Result<bool> {
-    let stdout = match stdout() {
-        Some(t) => t,
-        None => return specific_fail_str!("could not retrieve standard output."),
-    };
+    let stdout = try!(get_stdout());
     get_yn_input_with_output(stdout, message)
 }
 

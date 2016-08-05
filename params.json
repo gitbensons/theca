@@ -1,0 +1,6 @@
+{
+  "name": "Theca",
+  "tagline": "A simple, fully featured command line note taking tool written in Rust",
+  "body": "## Updated!\r\n\r\nTheca is once again a maintained project! It has been updated to compile on all current versions of `rustc`, linted with `clippy`, and regularly building on `travis`. I have updated the version to `1.0.0`, and published it to `crates.io` to allow for installation via `cargo install`. \r\n\r\nI am welcoming bugs/features/whatever, so please `cargo install theca`, start using it, and file bugs at [https://github.com/pwoolcoc/theca](https://github.com/pwoolcoc/theca)!",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}

@@ -1,6 +1,7 @@
 extern crate theca;
 
-use theca::{Status, Profile, BoolFlags};
+use theca::{Profile, BoolFlags};
+use theca::item::Status;
 
 #[test]
 fn test_add_note() {

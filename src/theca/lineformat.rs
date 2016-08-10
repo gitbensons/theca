@@ -12,7 +12,7 @@
 //   width.
 
 use errors::Result;
-use {Item, Status};
+use item::{Item, Status};
 use utils::termsize;
 
 #[derive(Clone, Copy)]

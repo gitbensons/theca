@@ -26,10 +26,8 @@ pub fn encrypt(data: &[u8], key: &[u8]) -> Result<Vec<u8>, symmetriccipher::Symm
     let mut f: Fortuna = SeedableRng::from_seed(data);
     f.fill_bytes(&mut iv);
 
-    let mut encryptor = aes::cbc_encryptor(aes::KeySize::KeySize256,
-                                           key,
-                                           &iv,
-                                           blockmodes::PkcsPadding);
+    let mut encryptor =
+        aes::cbc_encryptor(aes::KeySize::KeySize256, key, &iv, blockmodes::PkcsPadding);
 
     let mut final_result = Vec::<u8>::new();
     final_result.extend_from_slice(&iv);
@@ -42,9 +40,8 @@ pub fn encrypt(data: &[u8], key: &[u8]) -> Result<Vec<u8>, symmetriccipher::Symm
 
         final_result.extend(write_buffer.take_read_buffer().take_remaining());
 
-        match result {
-            BufferResult::BufferUnderflow => break,
-            BufferResult::BufferOverflow => {}
+        if let BufferResult::BufferUnderflow = result {
+            break;
         }
     }
 
@@ -56,10 +53,8 @@ pub fn decrypt(encrypted_data: &[u8],
                -> Result<Vec<u8>, symmetriccipher::SymmetricCipherError> {
     let iv = &encrypted_data[0..16];
 
-    let mut decryptor = aes::cbc_decryptor(aes::KeySize::KeySize256,
-                                           key,
-                                           iv,
-                                           blockmodes::PkcsPadding);
+    let mut decryptor =
+        aes::cbc_decryptor(aes::KeySize::KeySize256, key, iv, blockmodes::PkcsPadding);
 
     let mut final_result = Vec::<u8>::new();
     let mut read_buffer = buffer::RefReadBuffer::new(&encrypted_data[16..]);
@@ -69,9 +64,8 @@ pub fn decrypt(encrypted_data: &[u8],
     loop {
         let result = try!(decryptor.decrypt(&mut read_buffer, &mut write_buffer, true));
         final_result.extend(write_buffer.take_read_buffer().take_remaining());
-        match result {
-            BufferResult::BufferUnderflow => break,
-            BufferResult::BufferOverflow => {}
+        if let BufferResult::BufferUnderflow = result {
+            break;
         }
     }
 

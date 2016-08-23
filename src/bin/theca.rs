@@ -31,7 +31,7 @@ Usage:
     theca [options] list-profiles
     theca [options] info
     theca [options] clear
-    theca [options] [-s|-u|-n|--done]
+    theca [options] [-s|-u|-n|--done|--all]
     theca [options] <id>
     theca [options] search [--regex, --search-body] [-s|-u|-n|--done] <pattern>
     theca [options] transfer <id> to <name>
@@ -51,6 +51,7 @@ Profiles:
 Printing format:
     -c, --condensed                     Use the condensed printing format.
     -j, --json                          Print list output as a JSON object.
+    --all                               Print Items with every status
 
 Note list formatting:
     -l LIMIT, --limit LIMIT             Limit output to LIMIT notes

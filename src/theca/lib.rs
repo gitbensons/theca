@@ -69,6 +69,7 @@ pub struct Args {
     pub arg_name: Vec<String>,
     pub arg_pattern: String,
     pub arg_title: String,
+    pub flag_all: bool,
     pub flag_body: Vec<String>,
     pub flag_condensed: bool,
     pub flag_done: bool,
@@ -92,6 +93,7 @@ pub struct Args {
 }
 
 pub struct BoolFlags {
+    pub all: bool,
     pub condensed: bool,
     pub datesort: bool,
     pub editor: bool,
@@ -106,6 +108,7 @@ pub struct BoolFlags {
 impl BoolFlags {
     pub fn from_args(args: &Args) -> BoolFlags {
         BoolFlags {
+            all: args.flag_all,
             condensed: args.flag_condensed,
             datesort: args.flag_datesort,
             editor: args.flag_editor,
@@ -122,6 +125,7 @@ impl BoolFlags {
 impl Default for BoolFlags {
     fn default() -> BoolFlags {
         BoolFlags {
+            all: false,
             condensed: false,
             datesort: false,
             editor: false,

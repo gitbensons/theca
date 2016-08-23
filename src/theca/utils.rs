@@ -313,15 +313,18 @@ pub fn sorted_print(notes: &mut Vec<Item>,
     let datesort = flags.datesort;
     let reverse = flags.reverse;
     let search_body = flags.search_body;
+    let all = flags.all;
 
     // TODO: instead of collecting this, leave as an iterator? using .take(limit) instead of the
     // limit checking code below it?
-    if status.is_none() {
-        notes.retain(|n| n.status != Status::Done);
-    }
+    if !all {
+        if status.is_none() {
+            notes.retain(|n| n.status != Status::Done);
+        }
 
-    if let Some(status) = status {
-        notes.retain(|n| n.status == status);
+        if let Some(status) = status {
+            notes.retain(|n| n.status == status);
+        }
     }
 
     let limit = if limit != 0 && notes.len() >= limit {

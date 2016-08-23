@@ -48,11 +48,13 @@ impl Item {
         }
         try!(write!(output, "{}", column_seperator));
         if line_format.status_width != 0 {
+            let status_p = match self.status {
+                Status::Blank => String::from(""),
+                _ => format!("{:?}", self.status),
+            };
             try!(write!(output,
                         "{}",
-                        format_field(&format!("{:?}", self.status),
-                                     line_format.status_width,
-                                     false)));
+                        format_field(&status_p, line_format.status_width, false)));
             try!(write!(output, "{}", column_seperator));
         }
         try!(writeln!(output,

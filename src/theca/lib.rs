@@ -71,6 +71,7 @@ pub struct Args {
     pub arg_title: String,
     pub flag_body: Vec<String>,
     pub flag_condensed: bool,
+    pub flag_done: bool,
     pub flag_datesort: bool,
     pub flag_editor: bool,
     pub flag_encrypted: bool,
@@ -167,7 +168,7 @@ pub fn setup_args(args: &mut Args) -> Result<()> {
 }
 
 pub fn parse_cmds(profile: &mut Profile, args: &mut Args, profile_fingerprint: &u64) -> Result<()> {
-    let status = try!(extract_status(args.flag_none, args.flag_started, args.flag_urgent));
+    let status = try!(extract_status(args.flag_none, args.flag_started, args.flag_urgent, args.flag_done));
     let flags = BoolFlags::from_args(args);
 
     if [args.cmd_add,

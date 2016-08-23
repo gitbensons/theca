@@ -135,12 +135,13 @@ pub fn termsize() -> usize {
     }
 }
 
-pub fn extract_status(none: bool, started: bool, urgent: bool) -> Result<Option<Status>> {
-    match (none, started, urgent) {
-        (true, false, false) => Ok(Some(Status::Blank)),
-        (false, true, false) => Ok(Some(Status::Started)),
-        (false, false, true) => Ok(Some(Status::Urgent)),
-        (false, false, false) => Ok(None),
+pub fn extract_status(none: bool, started: bool, urgent: bool, done: bool) -> Result<Option<Status>> {
+    match (none, started, urgent, done) {
+        (true, false, false, false) => Ok(Some(Status::Blank)),
+        (false, true, false, false) => Ok(Some(Status::Started)),
+        (false, false, true, false) => Ok(Some(Status::Urgent)),
+        (false, false, false, true) => Ok(Some(Status::Done)),
+        (false, false, false, false) => Ok(None),
         _ => specific_fail_str!("Can only specify one status"),
     }
 }
@@ -315,9 +316,14 @@ pub fn sorted_print(notes: &mut Vec<Item>,
 
     // TODO: instead of collecting this, leave as an iterator? using .take(limit) instead of the
     // limit checking code below it?
+    if status.is_none() {
+        notes.retain(|n| n.status != Status::Done);
+    }
+
     if let Some(status) = status {
         notes.retain(|n| n.status == status);
     }
+
     let limit = if limit != 0 && notes.len() >= limit {
         limit
     } else {

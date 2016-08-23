@@ -31,13 +31,13 @@ Usage:
     theca [options] list-profiles
     theca [options] info
     theca [options] clear
-    theca [options] [-s|-u|-n]
+    theca [options] [-s|-u|-n|--done]
     theca [options] <id>
-    theca [options] search [--regex, --search-body] [-s|-u|-n] <pattern>
+    theca [options] search [--regex, --search-body] [-s|-u|-n|--done] <pattern>
     theca [options] transfer <id> to <name>
     theca [options] import <id> from <name>
-    theca [options] add <title> [-s|-u] [-b BODY|-t|-]
-    theca [options] edit <id> [<title>] [-s|-u|-n] [-b BODY|-t|-]
+    theca [options] add <title> [-s|-u|--done] [-b BODY|-t|-]
+    theca [options] edit <id> [<title>] [-s|-u|-n|--done] [-b BODY|-t|-]
     theca [options] del <id>...
 
 Profiles:
@@ -65,6 +65,7 @@ Statuses:
     -n, --none                          No status. (note default)
     -s, --started                       Started status.
     -u, --urgent                        Urgent status.
+    --done                              Done status.
 
 Body:
     -b BODY, --body BODY                Set body of the note to BODY.

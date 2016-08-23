@@ -398,6 +398,10 @@ impl Profile {
                            .iter()
                            .filter(|n| n.status == Status::Urgent)
                            .count();
+        let done_s = self.notes
+                            .iter()
+                            .filter(|n| n.status == Status::Done)
+                            .count();
         let tty = istty(STDOUT_FILENO);
         let min = match self.notes
                             .iter()
@@ -421,10 +425,11 @@ impl Profile {
         try!(pretty_line("encrypted: ", &format!("{}\n", self.encrypted), tty));
         try!(pretty_line("notes: ", &format!("{}\n", self.notes.len()), tty));
         try!(pretty_line("statuses: ",
-                         &format!("none: {}, started: {}, urgent: {}\n",
+                         &format!("none: {}, started: {}, urgent: {}, done: {}\n",
                                   no_s,
                                   started_s,
-                                  urgent_s),
+                                  urgent_s,
+                                  done_s),
                          tty));
         try!(pretty_line("note ages: ",
                          &format!("oldest: {}, newest: {}\n", min, max),

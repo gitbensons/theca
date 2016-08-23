@@ -74,6 +74,7 @@ pub enum Status {
     Blank,
     Started,
     Urgent,
+    Done,
 }
 
 impl Encodable for Status {
@@ -96,6 +97,11 @@ impl Encodable for Status {
                     encoder.emit_enum_variant("Urgent", 2usize, 0usize, |_| Ok(()))
                 })
             }
+            Status::Done => {
+                encoder.emit_enum("Status", |encoder| {
+                    encoder.emit_enum_variant("Done", 3usize, 0usize, |_| Ok(()))
+                })
+            }
         }
     }
 }
@@ -104,11 +110,12 @@ impl Decodable for Status {
     fn decode<D: ::rustc_serialize::Decoder>(decoder: &mut D)
                                              -> ::std::result::Result<Status, D::Error> {
         decoder.read_enum("Status", |decoder| {
-            decoder.read_enum_variant(&["", "Started", "Urgent"], |_, i| {
+            decoder.read_enum_variant(&["", "Started", "Urgent", "Done"], |_, i| {
                 Ok(match i {
                     0usize => Status::Blank,
                     1usize => Status::Started,
                     2usize => Status::Urgent,
+                    3usize => Status::Done,
                     _ => panic!("internal error: entered unreachable code"),
 
                 })
@@ -125,6 +132,7 @@ impl fmt::Display for Status {
                    Status::Blank => "",
                    Status::Started => "Started",
                    Status::Urgent => "Urgent",
+                   Status::Done => "Done",
                })
     }
 }
